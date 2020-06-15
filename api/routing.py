@@ -1,6 +1,6 @@
 from flask import Flask, Response, request
 import json
-from ..dal import create,read, update,delete,evolve
+from dal import create
 
 app = Flask(__name__, static_url_path='', static_folder='dist')
 
