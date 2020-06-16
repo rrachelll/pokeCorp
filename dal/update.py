@@ -6,7 +6,6 @@ from pymysql import IntegrityError
 def update_type_pokemon(pokemon):
     try :
         with connection.cursor() as cursor:
-            id_poke = select_id_pokemon_by_name(pokemon["name"])
             poke_url = "https://pokeapi.co/api/v2/pokemon/'{}'/".format(pokemon["name"])
             poke = requests.get(url=poke_url)
             poke = poke.json()

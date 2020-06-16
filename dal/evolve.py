@@ -3,17 +3,21 @@ from read import select_id_pokemon_by_name
 from read import select_id_trainer_by_name
 
 def evolve_to(name_pokemon,name_trainer):
-    poke_url = "https://pokeapi.co/api/v2/pokemon/{}/".format(pokemon)
-    poke = requests.get(url=poke_url)
-    poke = poke.json()
-    species_url = poke["species"]["url"]
-    species_info = requests.get(url=species_url)
-    species_info = species_info.json()
-    evolution_chain_url = species_info["evolution_chain"]["url"]
-    evolution_chain_info = requests.get(url = evolution_chain_url)
-    evolution_chain_info = evolution_chain_info.json()
-    chain_info = evolution_chain_info["chain"]
-    evolves_to = chain_info["evolves_to"]["species"]["name"]
+    try :
+        poke_url = "https://pokeapi.co/api/v2/pokemon/{}/".format(pokemon)
+        poke = requests.get(url=poke_url)
+        poke = poke.json()
+        species_url = poke["species"]["url"]
+        species_info = requests.get(url=species_url)
+        species_info = species_info.json()
+        evolution_chain_url = species_info["evolution_chain"]["url"]
+        evolution_chain_info = requests.get(url = evolution_chain_url)
+        evolution_chain_info = evolution_chain_info.json()
+        chain_info = evolution_chain_info["chain"]
+        evolves_to = chain_info["evolves_to"]["species"]["name"]
+        return f"evolve to '{evolves_to}'",200
+    except Exception as e:
+        return e,500
 
 """    Get the info of a specific pokemon.
 From the pokemon general info, get the species url.

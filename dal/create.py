@@ -1,5 +1,5 @@
-from connect_db import connection
-from data_update import update_type_pokemon
+from .connect_db import connection
+from .update import update_type_pokemon
 from pymysql import IntegrityError
 
 
