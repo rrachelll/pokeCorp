@@ -1,12 +1,12 @@
 from flask import Flask, Response, request
 import json
-#from ..dal import create
-import read
+from dal import create,delete,read,update
+
 app = Flask(__name__, static_url_path='', static_folder='dist')
 
 
 
-@app.route('/findOwnersPokemon/<trainer>')
+@app.route('/Pokemons/<trainer>')
 def pokemons_by_traine(trainer):
     try:
         pokemons_by_trainer = read.Get_pokemons_by_trainer(trainer)
@@ -15,7 +15,7 @@ def pokemons_by_traine(trainer):
         return e,400
 
 
-@app.route('/findTrainerOfPokamon/<name_pokemon>')
+@app.route('/pokemons/<name_pokemon>')
 def trainers_of_pokemon(name_pokemon):
     try :
         trainers_of_pokemon = read.Get_trainers_of_pokemon(name_pokemon)
@@ -25,7 +25,7 @@ def trainers_of_pokemon(name_pokemon):
 
 
 
-@app.route('/findPokamonByType/<type_pokemon>')
+@app.route('/pokemons/<type_pokemon>')
 def Get_pokemon_by_type(type_pokemon):
     try:
         pokemon_by_type = read.Get_pokemons_by_type(type_pokemon)
@@ -34,7 +34,7 @@ def Get_pokemon_by_type(type_pokemon):
         return e ,400
 
 
-@app.route('/add_pokemon', methods=["POST"])
+@app.route('/pokemons', methods=["POST"])
 def add():
     try :
         pokemon = request.get_json()
@@ -42,7 +42,7 @@ def add():
     except Exception as e:
         return e,400
 
-@app.route('/pokemon_of_trainer/<pokemon>/<trainer>', methods=['DELETE'])
+@app.route('/trainer/<pokemon>/<trainer>', methods=['DELETE'])
 def pokemon_of_trainer(pokemon,trainer):
     try:
         delete.delete_pokemon_of_trainer(pokemon,trainer)
@@ -51,7 +51,7 @@ def pokemon_of_trainer(pokemon,trainer):
         return e ,400
 
 
-@app.route('/update_type_pokemon', methods=["PUT"])
+@app.route('/pokemons', methods=["PUT"])
 def update_type_pokemon():
     try:
         pokemon = request.get_json()

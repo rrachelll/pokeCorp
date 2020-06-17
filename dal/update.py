@@ -1,5 +1,5 @@
-from connect_db import connection
-from read import select_id_pokemon_by_name
+#from connect_db import connection
+#from .read import Get_id_pokemon_by_name
 import requests
 from pymysql import IntegrityError
 

@@ -1,4 +1,4 @@
-from connect_db import connection
+from .connect_db import connection
 from pymysql import ProgrammingError
 
 
