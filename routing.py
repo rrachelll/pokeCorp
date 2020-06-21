@@ -1,73 +1,105 @@
-from flask import Flask, Response, request
-import json
-from dal import create,delete,read,update
+from flask import Flask, Response, request, render_template
 
+from dal import delete,create,read,update,evolve
+from pymysql import IntegrityError
 app = Flask(__name__, static_url_path='', static_folder='dist')
 
 
 
-@app.route('/Pokemons/<trainer>')
-def pokemons_by_traine(trainer):
+@app.route('/pokemons')
+def pokemons_by_traine():
     try:
-        pokemons_by_trainer = read.Get_pokemons_by_trainer(trainer)
-        return json.dumps(pokemons_by_trainer[0]),pokemons_by_trainer[1]
+        ptype = request.args.get("type")
+        trainer = request.args.get("trainer")
+        pokemons =[]
+        if ptype :
+            pokemons = read.get_pokemons_by_type(ptype)
+        elif trainer :
+            pokemons = read.get_pokemons(trainer)
+        return json.dumps(pokemons,indent=4),200
     except Exception as e:
-        return e,400
+        return {'ERROR:' :srt(e)},500
 
 
-@app.route('/pokemons/<name_pokemon>')
-def trainers_of_pokemon(name_pokemon):
+@app.route('/trainer')
+def trainers_of_pokemon():
     try :
-        trainers_of_pokemon = read.Get_trainers_of_pokemon(name_pokemon)
-        return json.dumps(trainers_of_pokemon[0]),trainers_of_pokemon[1]
+        pokemon = request.args.get("pokemon")
+        trainers_of_pokemon = read.get_trainers(pokemon)
+        return json.dumps(trainers_of_pokemon,indent=4),200
     except Exception as e :
-        return e ,400
+        return {'ERROR:' :srt(e)},500
 
-
-
-@app.route('/pokemons/<type_pokemon>')
-def Get_pokemon_by_type(type_pokemon):
-    try:
-        pokemon_by_type = read.Get_pokemons_by_type(type_pokemon)
-        return json.dumps(pokemon_by_type[0]),pokemon_by_type[1]
-    except Exception as e :
-        return e ,400
+@app.route('/trainer'  ,methods=["POST"])
+def add_owner():
+    try :
+        owner = request.get_json()
+        return create.add_owner(owner),201
+    except IntegrityError as e:
+            return "IntegrityError: {} ".format(e.args),409
+    except Exception as e:
+        return e,500
 
 
 @app.route('/pokemons', methods=["POST"])
 def add():
     try :
         pokemon = request.get_json()
-#        return create.add_pokemon_to_db(pokemon)
+        c = create.add_pokemon_to_db(pokemon)
+        return c,201
+    except IntegrityError as e:
+            return "IntegrityError: {} ".format(e.args),409
     except Exception as e:
-        return e,400
+        return e,500
 
-@app.route('/trainer/<pokemon>/<trainer>', methods=['DELETE'])
-def pokemon_of_trainer(pokemon,trainer):
+@app.route('/pokemons', methods=['DELETE'])
+def pokemon_of_trainer():
     try:
-        delete.delete_pokemon_of_trainer(pokemon,trainer)
-#       return "Delete '{}' of trainer '{}'".format(pokemon,trainer)
+        trainer = request.args.get("trainer")
+        pokemon = request.args.get("pokemon")
+        return delete.delete_pokemon_of_trainer(trainer,pokemon),202
     except Exception as e :
-        return e ,400
+        return e ,500
 
 
-@app.route('/pokemons', methods=["PUT"])
+@app.route('/types', methods=["PUT"])
 def update_type_pokemon():
     try:
         pokemon = request.get_json()
-#        return  data_update.update_type_pokemon(pokemon)
+        return update.update_type_pokemon(pokemon),201
+    except IntegrityError as e:
+            return f"IntegrityError:'{e.args}'",409
     except Exception as e:
-        return e,400
+        return e,500
  
 
-@app.route('/evolve/<pokemon>/<trainer>')
-def evolve(pokemon,trainer):
+@app.route('/evolve', methods=["PUT"])
+def evolve_pokemon():
     try:
-#        evolve_to = evolve_to(pokemon,trainer)
-        return evolve_to
+        pokemon = request.args.get("pokemon")
+        trainer = request.args.get("trainer")
+        evolve_to = evolve.evolve_to(pokemon,trainer)
+        return evolve_to,201
+    except ValueError as e:
+        return "ValueError : {}".format(e.args),409
     except Exception as e :
-        return e ,400
+        return e ,500
 
+
+
+@app.route('/pokemon_image/<num_poke>')
+def img_poke(num_poke):
+    try:
+        api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(num_poke)
+        api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(num_poke)
+        return render_template("poke_imge.html",api_img_poke = api_img_poke,api_img_poke_back = api_img_poke_back)
+    except Exception as e :
+        return e ,500
+
+
+@app.route('/<path:file_path>')
+def serve_static_file(file_path):
+    return app.send_static_file(file_path)
 
 
 
