@@ -1,9 +1,10 @@
 from flask import Flask, Response, request, render_template
-
-from dal import delete,create,read,update,evolve
+from model import poke_model,trainer_model,owner_model,evolve
+#from dal import delete,create,read,update,evolve
 from pymysql import IntegrityError
-app = Flask(__name__, static_url_path='', static_folder='dist')
+import json
 
+app = Flask(__name__, static_url_path='', static_folder='dist')
 
 
 @app.route('/pokemons')
@@ -13,9 +14,9 @@ def pokemons_by_traine():
         trainer = request.args.get("trainer")
         pokemons =[]
         if ptype :
-            pokemons = read.get_pokemons_by_type(ptype)
+            pokemons = poke_model.get_by_type(ptype)
         elif trainer :
-            pokemons = read.get_pokemons(trainer)
+            pokemons = poke_model.get(trainer)
         return json.dumps(pokemons,indent=4),200
     except Exception as e:
         return {'ERROR:' :srt(e)},500
@@ -25,16 +26,17 @@ def pokemons_by_traine():
 def trainers_of_pokemon():
     try :
         pokemon = request.args.get("pokemon")
-        trainers_of_pokemon = read.get_trainers(pokemon)
+        trainers_of_pokemon = trainer_model.get(pokemon)
         return json.dumps(trainers_of_pokemon,indent=4),200
     except Exception as e :
         return {'ERROR:' :srt(e)},500
 
-@app.route('/trainer'  ,methods=["POST"])
+
+@app.route('/owner'  ,methods=["POST"])
 def add_owner():
     try :
         owner = request.get_json()
-        return create.add_owner(owner),201
+        return owner_model.add(owner),201
     except IntegrityError as e:
             return "IntegrityError: {} ".format(e.args),409
     except Exception as e:
@@ -45,28 +47,28 @@ def add_owner():
 def add():
     try :
         pokemon = request.get_json()
-        c = create.add_pokemon_to_db(pokemon)
+        c = poke_model.add(pokemon)
         return c,201
     except IntegrityError as e:
             return "IntegrityError: {} ".format(e.args),409
     except Exception as e:
-        return e,500
+        return e.args,500
 
 @app.route('/pokemons', methods=['DELETE'])
 def pokemon_of_trainer():
     try:
         trainer = request.args.get("trainer")
         pokemon = request.args.get("pokemon")
-        return delete.delete_pokemon_of_trainer(trainer,pokemon),202
+        return owner_model.delete(trainer,pokemon),202
     except Exception as e :
-        return e ,500
+        return e.args ,500
 
 
 @app.route('/types', methods=["PUT"])
 def update_type_pokemon():
     try:
         pokemon = request.get_json()
-        return update.update_type_pokemon(pokemon),201
+        return poke_model.update_type(pokemon),201
     except IntegrityError as e:
             return f"IntegrityError:'{e.args}'",409
     except Exception as e:
@@ -78,7 +80,7 @@ def evolve_pokemon():
     try:
         pokemon = request.args.get("pokemon")
         trainer = request.args.get("trainer")
-        evolve_to = evolve.evolve_to(pokemon,trainer)
+        evolve_to = evolve.evolve(pokemon,trainer)
         return evolve_to,201
     except ValueError as e:
         return "ValueError : {}".format(e.args),409
