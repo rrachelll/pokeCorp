@@ -1,13 +1,36 @@
 from .connect_db import connection
+import requests
+
 
 def add(pokemon):
         with connection.cursor() as cursor:
-            insert_pokemon_query = """INSERT into pokemon (id,name, height,weight) values ( {},'{}', {},{})
-                    """.format(pokemon["id"],pokemon["name"],pokemon["height"],pokemon["weight"])
+            insert_pokemon_query = """INSERT into pokemon (id,name, height,weight,sprites_back_shiny,sprites_front_shiny) values ( {},'{}', {},{})
+                    """.format(pokemon["id"],pokemon["name"],pokemon["height"],pokemon["weight"],pokemon["sprites"]["back_shiny"],pokemon["sprites"]["front_shiny"])
             cursor.execute(insert_pokemon_query)
             connection.commit() 
             update_type = update_type(pokemon) 
             return "inserted pokemon : '{}' and '{}'".format(pokemon['name'],update_type)         
+
+
+def get(trainer):
+    with connection.cursor() as cursor:
+        query_select_pokemons_by_trainer = """ SELECT pokemon.name
+                FROM PokeCorp.pokemon join PokeCorp.owned join PokeCorp.trainer 
+                on pokemon.id = owned.id_pokemon AND trainer.id = owned.id_trainer
+                where trainer.name =  '{}'""".format(trainer)
+        cursor.execute(query_select_pokemons_by_trainer )
+        pokemon_name_same_trainer = cursor.fetchall()
+        return [poke["name"] for poke in pokemon_name_same_trainer]
+
+
+def get_imge(poke_id):
+    with connection.cursor() as cursor:
+        query_select_imge_pokemon = """ SELECT pokemon.sprites_back_shiny,pokemon.sprites_front_shiny
+                                    FROM PokeCorp.pokemon  
+                                    where pokemon.id =  '{}'""".format(poke_id)
+        cursor.execute(query_select_imge_pokemon )
+        pokemon_imge = cursor.fetchone()
+        return pokemon_imge["sprites_back_shiny"],pokemon_imge["sprites_front_shiny"]
 
 
 
@@ -32,19 +55,6 @@ def get_id_by_name(pokemon_name):
             return 0 if poke_id == None else poke_id["id"] 
 
 
-
-
-def get(trainer):
-    with connection.cursor() as cursor:
-        query_select_pokemons_by_trainer = """ SELECT pokemon.name
-                FROM PokeCorp.pokemon join PokeCorp.owned join PokeCorp.trainer 
-                on pokemon.id = owned.id_pokemon AND trainer.id = owned.id_trainer
-                where trainer.name =  '{}'""".format(trainer)
-        cursor.execute(query_select_pokemons_by_trainer )
-        pokemon_name_same_trainer = cursor.fetchall()
-        return [poke["name"] for poke in pokemon_name_same_trainer]
-
-
 def update_type(pokemon):
         with connection.cursor() as cursor:
             poke_url = "https://pokeapi.co/api/v2/pokemon/{}/".format(pokemon["name"])
@@ -57,3 +67,19 @@ def update_type(pokemon):
                     cursor.execute(insert_type_pokemon_query)
                     connection.commit() 
             return "Updated tpyes : " + str([t["type"]["name"] for t in poke["types"]])
+
+
+def update_imge(pokemon):
+    id_poke = get_id_by_name(pokemon["name"])
+    api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(id_poke)
+    api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(id_poke)
+    with connection.cursor() as cursor:
+        insert_imge_pokemon_query = """UPDATE pokemon
+                                       SET
+                                        sprites_back_shiny = '{}'
+                                        sprites_front_shiny = '{}'
+                                       WHERE id = {};
+                                    """.format(api_img_poke_back,api_img_poke,id_poke)
+        cursor.execute(insert_imge_pokemon_query)
+        connection.commit()
+    return "Updated sprites shiny"

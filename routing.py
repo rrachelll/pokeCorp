@@ -8,7 +8,7 @@ app = Flask(__name__, static_url_path='', static_folder='dist')
 
 
 @app.route('/pokemons')
-def pokemons_by_traine():
+def pokemons_by_trainer():
     try:
         ptype = request.args.get("type")
         trainer = request.args.get("trainer")
@@ -89,15 +89,21 @@ def evolve_pokemon():
 
 
 
-@app.route('/pokemon_image/<num_poke>')
-def img_poke(num_poke):
+@app.route('/pokemon_image/<id_poke>')
+def img_poke(id_poke):
     try:
-        api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(num_poke)
-        api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(num_poke)
+
+        #api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(num_poke)
+        #api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(num_poke)
+        api_img_poke_back,api_img_poke = poke_model.get_imge(id_poke)
         return render_template("poke_imge.html",api_img_poke = api_img_poke,api_img_poke_back = api_img_poke_back)
     except Exception as e :
         return e ,500
 
+
+@app.route('/')
+def home():
+    return render_template("index.html")
 
 @app.route('/<path:file_path>')
 def serve_static_file(file_path):
