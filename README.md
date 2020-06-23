@@ -23,9 +23,11 @@ Fields marked in blue are mandatory fields for entry into the DB
 ![Get%20imge%20pokemon](screenshot/imge_poke_25.png "Get pokemons by trainer")
 
 ## 
-![Get trainers of a pokemon](screenshot/get_trainer_of_pokemon.png "Get imge pokemon")
+![Get%20trainers%20of%20a%20pokemon](screenshot/get_trainer_of_pokemon.png "Get imge pokemon")
 
 ## 
 
-Evolve (pokemon x of trainer y)
+![Evolve (pokemon%20x%20of%20trainer%20y)](screenshot/evolve.png "Evolve (pokemon x of trainer y)")
+
+## 
 delete pokemon of trainer
