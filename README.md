@@ -8,7 +8,7 @@ PokeCorp is a company that tracks pokemon and their trainers around the world
 ![1.Update%20pokemon%20types](screenshot/Update_types_pokemon.png "Update pokemon types")
 ## 
 
-![Add%20new%20pokemon](pokemon-project-rrachelll/screenshot/add_pokemon.png "Add new pokemon")
+![Add%20new%20pokemon](screenshot/add_pokemon.png "Add new pokemon")
 Fields marked in blue are mandatory fields for entry into the DB
 ## 
 
