@@ -16,7 +16,7 @@ http://127.0.0.1:4200/pokemons
 Fields marked in blue are mandatory fields for entry into the DB
 ## 
 
-http://127.0.0.1:4200/pokemons?type=<ptype>
+http://127.0.0.1:4200/pokemons?type=<p_type>
 ![Get%20pokemons%20by%20type](screenshot/get_pokemon_by_same_type.png "Get pokemons by type")
 
 ## 
