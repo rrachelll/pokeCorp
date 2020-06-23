@@ -16,7 +16,7 @@ http://127.0.0.1:4200/pokemons
 Fields marked in blue are mandatory fields for entry into the DB
 ## 
 
-http://127.0.0.1:4200/pokemons?type=<type>
+http://127.0.0.1:4200/pokemons?type=<ptype>
 ![Get%20pokemons%20by%20type](screenshot/get_pokemon_by_same_type.png "Get pokemons by type")
 
 ## 
@@ -26,6 +26,7 @@ http://127.0.0.1:4200/pokemons?trainer=<name_trainer>
 
 ## 
 
+http://127.0.0.1:4200/pokemons?id=<id_pokemon>
 ![Get%20imge%20pokemon](screenshot/imge_poke_25.png "Get pokemons by trainer")
 
 ## 
@@ -41,7 +42,7 @@ http://127.0.0.1:4200/evolve?pokemon=<name_pokemon>&trainer=<name_trainer>
 ## 
 
 http://127.0.0.1:4200/pokemons?pokemon=<name_pokemon>&trainer=<name_trainer>
-![Delete%20pokemon%20of%20trainer](screenshot/deleted_pokemon_of_trainer.png "delete pokemon of trainer")
+![Delete%20pokemon%20of%20trainer](screenshot/deleted_pokemon_of_trainer.png "Delete pokemon of trainer")
 
 ## 
 http://127.0.0.1:4200/owner
