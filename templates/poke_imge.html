@@ -3,34 +3,15 @@
 
 <head>
    <meta charset="utf-8">
-   <title>Simple Flask Website</title>
+   <title>welcom to pokeCorp</title>
+   <link rel="stylesheet" href='http://127.0.0.1:4200/static/style.css' />
 </head>
 
-<body  style="background-image: url('http://127.0.0.1:4200/image/abstract-antique-backdrop-background-129731.jpg');
-background-repeat: no-repeat;
-background-attachment: fixed; 
-  background-size: cover;">
-
-      <div class="row" style="    
-      position: fixed;
-      top: 50%;
-      left: 40%;">
-
-         <img style=" 
-         margin-left: auto;
-         margin-right: auto;
-               width:  500px;
-               display:inline; "
-            
-            src={{api_img_poke_back}}>
-         <img style="
-               margin-left: auto;
-               margin-right: auto;
-               width:  500px;
-               display:inline;
-                "
-           
-            src={{api_img_poke}}>
+<body style="background-image: url('http://127.0.0.1:4200/image/abstract-antique-backdrop-background-129731.jpg');">
+   <div class="row div_style">
+      <img class="size_location" src={{api_img_poke_back}}>
+      <img class="size_location" src={{api_img_poke}}>
    </div>
+</body>
 
 </html>
