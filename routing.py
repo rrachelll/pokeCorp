@@ -50,8 +50,7 @@ def add_owner():
 def add():
     try :
         pokemon = request.get_json()
-        c = poke_model.add(pokemon)
-        return c,201
+        return poke_model.add(pokemon),201
     except IntegrityError as e:
             return "IntegrityError: {} ".format(e.args),409
     except Exception as e:
