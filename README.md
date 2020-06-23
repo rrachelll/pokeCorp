@@ -3,10 +3,13 @@ PokeCorp is a company that tracks pokemon and their trainers around the world
 
 ## ScreenShots
 
+ 
 
 ![1.Update%20pokemon%20types](screenshot/Update_types_pokemon.png "Update pokemon types")
 
-![Add%20new%20pokemon]("Add new pokemon")
+![Add%20new%20pokemon](screenshot/Update_types_pokemon.png "Add new pokemon")
+Fields marked in blue are mandatory fields for entry into the DB
+## 
 
 Get pokemons by type
 Get pokemons by trainer
