@@ -16,11 +16,11 @@ Fields marked in blue are mandatory fields for entry into the DB
 
 ## 
 
-![Get%20pokemons%20by%20trainer](screenshot/get_pokemon_by_same_trainer.png"Get pokemons by trainer")
+![Get%20pokemons%20by%20trainer](screenshot/get_pokemon_by_same_trainer.png "Get pokemons by trainer")
 
 ## 
 
-![Get%20imge%20pokemon](screenshot/imge_poke_25.png"Get pokemons by trainer")
+![Get%20imge%20pokemon](screenshot/imge_poke_25.png "Get pokemons by trainer")
 
 ## 
 ![Get trainers of a pokemon](screenshot/get_trainer_of_pokemon.png "Get imge pokemon")
