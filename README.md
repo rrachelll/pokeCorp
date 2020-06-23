@@ -3,7 +3,8 @@ PokeCorp is a company that tracks pokemon and their trainers around the world
 
 ## ScreenShots
 
- 
+http://127.0.0.1:4200/
+![home](screenshot/home.png "home") 
 
 ![1.Update%20pokemon%20types](screenshot/update_type.png "Update pokemon types")
 ## 
