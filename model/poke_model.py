@@ -23,13 +23,16 @@ def get(trainer):
         return [poke["name"] for poke in pokemon_name_same_trainer]
 
 
-def get_imge(poke_id):
+def get_imge(id):
     with connection.cursor() as cursor:
         query_select_imge_pokemon = """ SELECT pokemon.sprites_back_shiny,pokemon.sprites_front_shiny
                                     FROM PokeCorp.pokemon  
-                                    where pokemon.id =  '{}'""".format(poke_id)
+                                    where pokemon.id =  '{}'""".format(id)
         cursor.execute(query_select_imge_pokemon )
         pokemon_imge = cursor.fetchone()
+        if pokemon_imge["sprites_back_shiny"] is None:
+            update_imge(id)
+            return get_imge(id)
         return pokemon_imge["sprites_back_shiny"],pokemon_imge["sprites_front_shiny"]
 
 
@@ -69,17 +72,16 @@ def update_type(pokemon):
             return "Updated tpyes : " + str([t["type"]["name"] for t in poke["types"]])
 
 
-def update_imge(pokemon):
-    id_poke = get_id_by_name(pokemon["name"])
-    api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(id_poke)
-    api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(id_poke)
+def update_imge(id):
+    api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(id)
+    api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(id)
     with connection.cursor() as cursor:
         insert_imge_pokemon_query = """UPDATE pokemon
                                        SET
-                                        sprites_back_shiny = '{}'
+                                        sprites_back_shiny = '{}',
                                         sprites_front_shiny = '{}'
                                        WHERE id = {};
-                                    """.format(api_img_poke_back,api_img_poke,id_poke)
+                                    """.format(api_img_poke_back,api_img_poke,id)
         cursor.execute(insert_imge_pokemon_query)
         connection.commit()
     return "Updated sprites shiny"

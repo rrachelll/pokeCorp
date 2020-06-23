@@ -10,16 +10,20 @@ app = Flask(__name__, static_url_path='', static_folder='dist')
 @app.route('/pokemons')
 def pokemons_by_trainer():
     try:
+        id = request.args.get("id")
         ptype = request.args.get("type")
         trainer = request.args.get("trainer")
         pokemons =[]
-        if ptype :
+        if id:
+            api_img_poke_back,api_img_poke = poke_model.get_imge(id)
+            return render_template("poke_imge.html",api_img_poke = api_img_poke,api_img_poke_back = api_img_poke_back),200
+        elif ptype :
             pokemons = poke_model.get_by_type(ptype)
         elif trainer :
             pokemons = poke_model.get(trainer)
         return json.dumps(pokemons,indent=4),200
     except Exception as e:
-        return {'ERROR:' :srt(e)},500
+        return {'ERROR:' :str(e)},500
 
 
 @app.route('/trainer')
@@ -84,19 +88,6 @@ def evolve_pokemon():
         return evolve_to,201
     except ValueError as e:
         return "ValueError : {}".format(e.args),409
-    except Exception as e :
-        return e ,500
-
-
-
-@app.route('/pokemon_image/<id_poke>')
-def img_poke(id_poke):
-    try:
-
-        #api_img_poke_back="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/{}.png".format(num_poke)
-        #api_img_poke = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/{}.png".format(num_poke)
-        api_img_poke_back,api_img_poke = poke_model.get_imge(id_poke)
-        return render_template("poke_imge.html",api_img_poke = api_img_poke,api_img_poke_back = api_img_poke_back)
     except Exception as e :
         return e ,500
 
