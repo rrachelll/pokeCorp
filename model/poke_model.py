@@ -4,7 +4,7 @@ import requests
 
 def add(pokemon):
         with connection.cursor() as cursor:
-            insert_pokemon_query = """INSERT into pokemon (id,name, height,weight,sprites_back_shiny,sprites_front_shiny) values ( {},'{}', {},{})
+            insert_pokemon_query = """INSERT into pokemon (id,name, height,weight,sprites_back_shiny,sprites_front_shiny) values ( {},'{}', {},{},'{}','{}')
                     """.format(pokemon["id"],pokemon["name"],pokemon["height"],pokemon["weight"],pokemon["sprites"]["back_shiny"],pokemon["sprites"]["front_shiny"])
             cursor.execute(insert_pokemon_query)
             connection.commit() 

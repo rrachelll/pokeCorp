@@ -1,6 +1,5 @@
 from flask import Flask, Response, request, render_template
 from model import poke_model,trainer_model,owner_model,evolve
-#from dal import delete,create,read,update,evolve
 from pymysql import IntegrityError
 import json
 
