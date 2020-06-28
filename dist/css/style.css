@@ -1,0 +1,25 @@
+body {
+    background: white;
+    color: yellow;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background-size: cover;
+}
+
+.img_style{
+    margin-left: auto;
+    margin-right: auto;
+    display:inline;
+}
+
+.size_location{
+    margin-left: auto;
+    margin-right: auto;
+    width:  500px;
+    display:inline;
+}
+
+.div_style{
+    position: fixed;
+    top: 50%;
+    left: 40%;}
