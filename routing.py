@@ -2,7 +2,7 @@ from flask import Flask, Response, request, render_template
 from model import poke_model,trainer_model,owner_model,evolve
 #from dal import delete,create,read,update,evolve
 from pymysql import IntegrityError
-import json
+import jso
 
 app = Flask(__name__, static_url_path='', static_folder='dist')
 
